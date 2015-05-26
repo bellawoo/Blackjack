@@ -1,3 +1,4 @@
+require 'pry'
 class Card
 	def initialize rank, suit
 		@rank = rank
@@ -16,37 +17,38 @@ class Card
 	end
 end
 
-class Deck < Card
-	attr_reader :cards
-
+class Deck
 	def initialize
-		
+		@types = [:A, 2, 3, 4, 5, 6, 7, 8, 9, 10, :J, :Q, :K]
+		@suit = [:C, :D, :S, :H]
 	end
 
-	def count
-		
+	def cards
+		@types.product(@suit)
 	end
 
 	def draw
-		
+		cards.sample.shift
+		binding.pry
 	end
 
-	def drawn_card
-		
-	end
 end
 
-# class Hand
-# 	def value
-		
-# 	end
+class Hand
+	def initialize
+		@hand = []
+	end
 
-# 	def busted?
+	def value
 		
-# 	end
+	end
 
-# 	def blackjack?
+	def busted?
 		
-# 	end
+	end
 
-# end
+	def blackjack?
+		
+	end
+
+end
