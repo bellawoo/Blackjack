@@ -18,21 +18,18 @@ class Card
 end
 
 class Deck
-	attr_reader :full_deck
 	def initialize
 		@types = [:A, 2, 3, 4, 5, 6, 7, 8, 9, 10, :J, :Q, :K]
 		@suit = [:C, :D, :S, :H]
 	end
 
 	def cards
-		full_deck = []
-		full_deck.push(@types.product(@suit))
+		@types.product(@suit)
 	end
 
 	def draw
-		drawn_card = []
-		shuffled_deck = full_deck.shuffle!
-		drawn_card.shift(shuffled_deck)
+		shuffled_deck = cards.shuffle!
+		shuffled_deck.shift
 	end
 end
 
