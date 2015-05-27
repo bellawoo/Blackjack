@@ -6,8 +6,7 @@ class Card
 	end
 
 	def value
-		# binding.pry
-		if @rank == :K || @rank == :Q || @rank == :J
+		if [:J, :Q, :K].include? @rank
 			return 10
 		elsif @rank == :A
 			return 1
