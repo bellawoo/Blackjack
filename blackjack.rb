@@ -1,4 +1,5 @@
 require 'pry'
+
 class Card
 	def initialize rank, suit
 		@rank = rank
@@ -27,26 +28,39 @@ class Deck
 	end
 
 	def draw
-		shuffled_deck = cards.shuffle!
-		shuffled_deck.shift
+		cards.shuffle!.shift
+	end
+
+	def drawn
+		cards_drawn = []
+		cards_drawn.push(draw)
 	end
 end
 
 class Hand
 	def initialize
-		@hand = []
+		@hand = 0
 	end
 
-	def value
-		
+	# stuck on how to iterate through multidimensional arrays for just the first index of each array
+	def add *cards
+		value = 0
+		Deck.drawn.each do |cards|
+			value += cards
+		end
+		value
+	end
+
+	def value 
+		# push total add return to @hand
 	end
 
 	def busted?
-		
+		true if @hand > 21
 	end
 
 	def blackjack?
-		
+		true if @hand == 21
 	end
 
 end
