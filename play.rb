@@ -1,23 +1,26 @@
 require 'pry'
-require "./blackjack.rb"
+require "./blackjack"
 
 # create deck and deal two cards each to player and dealer
 GameDeck = Deck.new
 dealer = Hand.new
 player = Hand.new
+dealer.add(GameDeck.draw, GameDeck.draw)
+player.add(GameDeck.draw, GameDeck.draw)
 
+def reveal_hand player, dealer
+	# reveal two cards and sum to player'
+	# reveal one card of dealer's hand to player
 
-# reveal one card of dealer's hand to player
-dealer_hand = dealer.add(GameDeck.draw, GameDeck.draw)
-# reveal two cards and sum to player'
-player_hand = player.add(GameDeck.draw, GameDeck.draw).to_s
-puts "Your hand: #{player_hand}"
-puts "Dealer's second draw: #{dealer_hand[1]}"
+	puts "Your hand: #{player.to_s}"
+	puts "Dealer's second draw: #{dealer}"
+end
+
+binding.pry
 
 # sum two cards
-def Determine_21?
-	
-end
+initial_score = player.value
+puts "Your score so far: #{initial_score}"
 
 # if player cards = 21 --> win
 # else --> ask if player wants to hit or stand

@@ -46,8 +46,7 @@ class Hand
 	def initialize
 		@cards_in_hand = []
 	end
-
-	# stuck on how to iterate through multidimensional arrays for just the first index of each array
+#
 	def add *cards
 		cards.each do |card|
 			@cards_in_hand.push(card)
@@ -77,11 +76,7 @@ class Hand
 	end
 
 	def busted?
-		if value > 21
-			return true
-		else
-			return false
-		end
+		value > 21 ? true : false
 	end
 
 	def blackjack?
