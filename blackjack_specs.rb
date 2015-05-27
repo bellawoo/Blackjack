@@ -1,7 +1,13 @@
 require './blackjack'
 require 'minitest/autorun'
+require 'pry'
 
 class TestCard < Minitest::Test
+  def test_single_card_value
+    card = Card.new(5, :D)
+    assert_equal card.value, 5
+  end
+
   def test_number_card_value
     2.upto(10) do |x|
       card = Card.new(x, :S)
