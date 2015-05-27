@@ -1,6 +1,8 @@
 require 'pry'
 
 class Card
+	attr_reader :rank, :suit
+
 	def initialize rank, suit
 		@rank = rank
 		@suit = suit
@@ -21,46 +23,85 @@ class Deck
 	def initialize
 		@types = [:A, 2, 3, 4, 5, 6, 7, 8, 9, 10, :J, :Q, :K]
 		@suit = [:C, :D, :S, :H]
+		@cards = @types.product(@suit).shuffle!
+		@cards_drawn = []
 	end
 
 	def cards
-		@types.product(@suit)
+		@cards
 	end
 
 	def draw
-		cards.shuffle!.shift
+		c = @cards.shift
+		@cards_drawn.push(c)
+		return c
 	end
 
 	def drawn
-		cards_drawn = []
-		cards_drawn.push(draw)
+		@cards_drawn
 	end
 end
 
 class Hand
 	def initialize
-		@hand = 0
+		@cards_in_hand = []
 	end
 
 	# stuck on how to iterate through multidimensional arrays for just the first index of each array
 	def add *cards
-		value = 0
-		Deck.drawn.each do |cards|
-			value += cards
+		cards.each do |card|
+			@cards_in_hand.push(card)
 		end
-		value
 	end
 
 	def value 
-		# push total add return to @hand
+		# push total add return to @hand_value
+		@hand_value = 0
+		@cards_in_hand.each do |card|
+			@hand_value += card.value
+		end
+		if @hand_value < 12 && has_ace?
+			@hand_value += 10
+		else
+			@hand_value
+		end
+	end
+
+	def has_ace?
+		@cards_in_hand.each do |card|
+			if card.rank == :A
+				return true
+			end
+		end
+		return false
 	end
 
 	def busted?
-		true if @hand > 21
+		if value > 21
+			return true
+		else
+			return false
+		end
 	end
 
 	def blackjack?
-		true if @hand == 21
+		@card_values = []
+		@cards_in_hand.each do |card|
+			@card_values.push(card.value)
+		end
+		if @card_values.include?(1) && @card_values.include?(10)
+			return true
+		else
+			false
+		end
 	end
 
+	def to_s
+		@string_array = []
+		@cards_in_hand.each do|card|
+			@string_array.push(card.rank.to_s,card.suit.to_s)
+		end
+		@string_array = @string_array.each_slice(2).map { |a| a.join }
+		@string_array.join(", ")
+	end
 end
