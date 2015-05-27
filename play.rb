@@ -1,16 +1,23 @@
+require 'pry'
 require "./blackjack.rb"
 
-# set up human player
+# create deck and deal two cards each to player and dealer
+GameDeck = Deck.new
+dealer = Hand.new
+player = Hand.new
 
-# draw two cards for player
-
-# sum two cards
-
-# reveal two cards and sum to player
-
-# draw two cards for dealer
 
 # reveal one card of dealer's hand to player
+dealer_hand = dealer.add(GameDeck.draw, GameDeck.draw)
+# reveal two cards and sum to player'
+player_hand = player.add(GameDeck.draw, GameDeck.draw).to_s
+puts "Your hand: #{player_hand}"
+puts "Dealer's second draw: #{dealer_hand[1]}"
+
+# sum two cards
+def Determine_21?
+	
+end
 
 # if player cards = 21 --> win
 # else --> ask if player wants to hit or stand
@@ -21,11 +28,17 @@ require "./blackjack.rb"
 # if = 21 --> win
 # else --> ask if player wants to hit or stand
 # repeat
+def Hit
+	
+end
 
 # STAND
 # sum cards
 # if = 21 --> win
 # else --> return sum
+def Stand
+	
+end
 
 # Dealer hits
 # sum cards
