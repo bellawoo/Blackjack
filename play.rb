@@ -5,8 +5,12 @@ require "./DL_blackjack"
 GameDeck = Deck.new
 dealer = Hand.new
 player = Hand.new
-dealer.add(GameDeck.draw, GameDeck.draw)
-player.add(GameDeck.draw, GameDeck.draw)
+# dealer.add(GameDeck.draw, GameDeck.draw)
+# player.add(GameDeck.draw, GameDeck.draw)
+
+def begin_game
+	
+end
 
 def reveal_hand
 	current_hand = player.to_s
@@ -55,6 +59,11 @@ def score
 	initial_score = current_hand.value
 	puts "Your score so far: #{initial_score}"
 end
+
+system."clear"
+puts "Would you like to play Blackjack?"
+answer = gets.chomp.downcase
+answer ? begin_game : puts "Goodbye."
 
 # Dealer hits
 # sum cards

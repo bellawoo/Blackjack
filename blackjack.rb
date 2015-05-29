@@ -1,11 +1,12 @@
 require 'pry'
 
 class Card
-	attr_reader :rank, :suit
+	attr_reader :rank, :suit, :face_value
 
 	def initialize rank, suit
 		@rank = rank
 		@suit = suit
+		@face_value = @rank
 	end
 
 	def value
@@ -14,8 +15,12 @@ class Card
 		elsif @rank == :A
 			return 1
 		else
-			return @rank
+			@rank
 		end
+	end
+
+	def to_s
+		"#{@face_value}#{suit}"
 	end
 end
 
@@ -57,7 +62,7 @@ class Hand
 		# push total add return to @hand_value
 		@hand_value = 0
 		@cards_in_hand.each do |card|
-			@hand_value += card.value
+			@hand_value += card.rank
 		end
 		if @hand_value < 12 && has_ace?
 			@hand_value += 10
@@ -67,16 +72,13 @@ class Hand
 	end
 
 	def has_ace?
-		@cards_in_hand.each do |card|
-			if card.rank == :A
-				return true
-			end
+		@cards_in_hand.any? do |card|
+			card.face_value == :A
 		end
-		return false
 	end
 
 	def busted?
-		value > 21 ? true : false
+		value > 21
 	end
 
 	def blackjack?
@@ -92,11 +94,7 @@ class Hand
 	end
 
 	def to_s
-		@string_array = []
-		@cards_in_hand.each do|card|
-			@string_array.push(card.rank.to_s,card.suit.to_s)
-		end
-		@string_array = @string_array.each_slice(2).map { |a| a.join }
-		@string_array.join(", ")
+		@cards = @cards_in_hand
+		@cards.map { |a| a.to_s }.join(", ")
 	end
 end
