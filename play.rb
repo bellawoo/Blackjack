@@ -1,5 +1,5 @@
 require 'pry'
-require "./blackjack"
+require "./DL_blackjack"
 
 # create deck and deal two cards each to player and dealer
 GameDeck = Deck.new
@@ -8,22 +8,23 @@ player = Hand.new
 dealer.add(GameDeck.draw, GameDeck.draw)
 player.add(GameDeck.draw, GameDeck.draw)
 
-def reveal_hand player, dealer
-	# reveal two cards and sum to player'
-	# reveal one card of dealer's hand to player
-
-	puts "Your hand: #{player.to_s}"
-	puts "Dealer's second draw: #{dealer}"
+def reveal_hand
+	current_hand = player.to_s
+	puts "Your hand: #{current_hand}"
+	dealer_hand = dealer.to_s
+	puts "Dealer's second draw: #{dealer_hand}"
+	score
+	puts "Type \"hit\" or \"stand\" to continue."
+	move = gets.chomp.downcase
+	if move == "hit"
+		Hit
+	elsif move == "stand"
+		Stand
+	else
+		puts "Not a valid option. Please try again. Hit or stand?"
+	end
 end
 
-binding.pry
-
-# sum two cards
-initial_score = player.value
-puts "Your score so far: #{initial_score}"
-
-# if player cards = 21 --> win
-# else --> ask if player wants to hit or stand
 
 # HIT
 # draw another card for player
@@ -40,7 +41,19 @@ end
 # if = 21 --> win
 # else --> return sum
 def Stand
-	
+	if score == 21
+		return true
+	else
+		if #dealer's sum is larger than score
+	end
+end
+
+def score
+	# sum two cards
+	# if player cards = 21 --> win
+	# else --> ask if player wants to hit or stand
+	initial_score = current_hand.value
+	puts "Your score so far: #{initial_score}"
 end
 
 # Dealer hits
@@ -49,5 +62,3 @@ end
 # else hits
 # sum cards
 # repeat until > 17
-
-# compare player and dealer sums. larger sum wins.
