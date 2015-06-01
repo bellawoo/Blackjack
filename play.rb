@@ -1,73 +1,88 @@
 require 'pry'
 require "./DL_blackjack"
 
-# create deck and deal two cards each to player and dealer
-GameDeck = Deck.new
+# initialize game
+gameDeck = Deck.new
 dealer = Hand.new
 player = Hand.new
-# dealer.add(GameDeck.draw, GameDeck.draw)
-# player.add(GameDeck.draw, GameDeck.draw)
 
-def begin_game
-	
-end
+# deal initial hands
+dealer.add(gameDeck.draw, gameDeck.draw)
+player.add(gameDeck.draw, gameDeck.draw)
 
+# reveal hands without dealer's value
 def reveal_hand
-	current_hand = player.to_s
-	puts "Your hand: #{current_hand}"
-	dealer_hand = dealer.to_s
-	puts "Dealer's second draw: #{dealer_hand}"
-	score
-	puts "Type \"hit\" or \"stand\" to continue."
+	puts "Your hand: #{player.to_s} Hand value: #{player.value}"
+	puts "Dealer's second draw: #{dealer.to_s.slice(0..1)}"
+end
+
+def Hit_or_stand
 	move = gets.chomp.downcase
-	if move == "hit"
-		Hit
-	elsif move == "stand"
-		Stand
-	else
-		puts "Not a valid option. Please try again. Hit or stand?"
+	until player.busted? || move == "stand" do
+		reveal_hand
+		puts "Would you like to hit or stand?"
+		puts "Type \"hit\" or \"stand\" to continue."
+			if move == "hit"
+				player.add(gameDeck.draw)
+				reveal_hand
+			else
+				puts "Not a valid option. Please try again. Hit or stand?"
+			end
 	end
 end
 
-
-# HIT
-# draw another card for player
-# sum cards
-# if = 21 --> win
-# else --> ask if player wants to hit or stand
-# repeat
-def Hit
-	
-end
-
-# STAND
-# sum cards
-# if = 21 --> win
-# else --> return sum
-def Stand
-	if score == 21
-		return true
-	else
-		if #dealer's sum is larger than score
-	end
-end
-
-def score
-	# sum two cards
-	# if player cards = 21 --> win
-	# else --> ask if player wants to hit or stand
-	initial_score = current_hand.value
-	puts "Your score so far: #{initial_score}"
-end
-
-system."clear"
-puts "Would you like to play Blackjack?"
+system "clear"
+puts "Would you like to play Blackjack? Y/N"
 answer = gets.chomp.downcase
-answer ? begin_game : puts "Goodbye."
+if answer == "y"
+	Hit_or_stand
+elsif "n"
+	puts "Goodbye."
+	system "clear"
+else
+	puts "Not a valid option. Please type yes or no."
+	answer = gets.chomp.downcase
+end
 
-# Dealer hits
-# sum cards
-# if = 21 --> win
-# else hits
-# sum cards
-# repeat until > 17
+# both players begin as 'not winning'
+player_wins = false
+dealer_wins = false
+
+# when neither players have hit blackjack, we need to continue asking the player whether they want to hit/stand
+if !player.blackjack? && !dealer.blackjack?
+	until player.busted? || player_wins
+		Hit_or_stand player, dealer
+	end
+	#  auto deal to the dealer until it hits hard 17
+	until dealer.value >= 17 || dealer.busted? || player.busted? do
+		dealer.add(gameDeck.draw)
+	end
+# when dealer has blackjack, switch to win, otherwise player wins
+else
+	if dealer.blackjack?
+	dealer_wins = true
+	puts "Dealer wins!"
+	else
+		player_wins = true
+		puts "Player wins!"
+	end
+end
+
+if player.busted?
+	dealer_wins = true
+	reveal_hand player, dealer
+	puts "Player busted. Dealer wins."
+elsif dealer.busted?
+	player_wins = true
+	reveal_hand player, dealer
+	puts "Dealer busts."
+elsif player.value == dealer.value
+	reveal_hand player, dealer
+	puts "Push. Player and dealer hands are same amount."
+elsif player.value > dealer.value
+	player_wins = true
+	puts "Player wins!"
+elsif player.value < dealer.value
+	dealer_wins = true
+	puts "Dealer wins!"		
+end
