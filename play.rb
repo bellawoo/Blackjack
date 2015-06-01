@@ -33,7 +33,7 @@ def Hit_or_stand gameDeck, player, dealer
 	end
 end
 
-def check_win player, dealer, gameDeck
+def check_win gameDeck, player, dealer
 	# both players begin as 'not winning'
 	player_wins = false
 	dealer_wins = false
